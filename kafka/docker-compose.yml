@@ -1,0 +1,91 @@
+services:
+  kafka:
+    image: bitnamilegacy/kafka:3.7
+    container_name: kafka
+    ports:
+      - "29092:29092"
+    environment:
+      - KAFKA_CFG_NODE_ID=1
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:29092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:29092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_CFG_NUM_PARTITIONS=2
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+    volumes:
+      - kafka_data:/bitnami/kafka
+    networks:
+      - kafka-net
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
+  orders-api:
+    build: ./orders-api
+    container_name: orders-api-kafka
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_TOPIC=orders.events
+      - NUM_PARTITIONS=2
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
+  inventory-consumer:
+    build: ./inventory-consumer
+    # Sin container_name para permitir escalamiento horizontal (--scale inventory-consumer=2)
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_TOPIC=orders.events
+      - KAFKA_GROUP_ID=inventory-service-group
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
+  billing-consumer:
+    build: ./billing-consumer
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_TOPIC=orders.events
+      - KAFKA_GROUP_ID=billing-service-group
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
+  notification-consumer:
+    build: ./notification-consumer
+    environment:
+      - KAFKA_BROKER=kafka:9092
+      - KAFKA_TOPIC=orders.events
+      - KAFKA_GROUP_ID=notification-service-group
+    depends_on:
+      - kafka
+    networks:
+      - kafka-net
+
+volumes:
+  kafka_data:
+    driver: local
+
+networks:
+  kafka-net:
+    driver: bridge

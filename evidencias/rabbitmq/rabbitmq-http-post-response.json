@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/orders",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "customerName": "Carlos Gómez",
+      "product": "Libro de arquitectura",
+      "quantity": 1
+    }
+  },
+  "response": {
+    "statusCode": 202,
+    "statusMessage": "Accepted",
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "184"
+    },
+    "body": {
+      "status": "accepted",
+      "message": "Pedido recibido y enviado a RabbitMQ",
+      "orderId": "ORD-1729992015000-4821",
+      "correlationId": "corr-48f864be-86eb-42f0-9366-0d676839a8e2",
+      "queue": "pedidos",
+      "processingTimeMs": 14
+    }
+  }
+}

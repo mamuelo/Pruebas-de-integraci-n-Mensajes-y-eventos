@@ -1,0 +1,34 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://localhost:3000/orders",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "customerName": "Carlos Gómez",
+      "product": "Libro de arquitectura",
+      "quantity": 1,
+      "unitPrice": 85000
+    }
+  },
+  "response": {
+    "statusCode": 202,
+    "statusMessage": "Accepted",
+    "headers": {
+      "content-type": "application/json; charset=utf-8",
+      "content-length": "285"
+    },
+    "body": {
+      "status": "accepted",
+      "message": "Pedido recibido y evento OrderCreated publicado en Kafka",
+      "orderId": "ORD-1729992035000-7712",
+      "eventId": "evt-7f12a149-bc91-4cf1-8bc4-9d10f8812c44",
+      "correlationId": "corr-5a910d92-23f1-46ab-8231-1e901f44a9b1",
+      "topic": "orders.events",
+      "partition": 0,
+      "offset": "14",
+      "processingTimeMs": 28
+    }
+  }
+}

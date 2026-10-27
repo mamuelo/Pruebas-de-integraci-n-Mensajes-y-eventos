@@ -1,0 +1,12 @@
+{
+  "name": "rabbitmq-notification-worker",
+  "version": "1.0.0",
+  "description": "Worker consumidor de RabbitMQ para procesamiento y notificación de pedidos",
+  "main": "src/worker.js",
+  "scripts": {
+    "start": "node src/worker.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.4"
+  }
+}

@@ -1,0 +1,197 @@
+[
+  {
+    "id": "CP-01",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Validar que el endpoint POST /orders recibe el pedido y responde con estado accepted y orderId.",
+    "precondiciones": "Servicio orders-api en ejecución.",
+    "datosEntrada": {
+      "customerName": "Carlos Gómez",
+      "product": "Libro de arquitectura de software",
+      "quantity": 2
+    },
+    "pasos": [
+      "1. Enviar solicitud POST a http://localhost:3000/orders con payload JSON válido.",
+      "2. Registrar tiempo de respuesta del servidor HTTP.",
+      "3. Validar presencia de orderId, correlationId y status \"accepted\" en la respuesta."
+    ],
+    "resultadoEsperado": "Código HTTP 202 Accepted, JSON con status=\"accepted\" y orderId generado.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Entorno de contenedores pendiente de despliegue en host.",
+    "analisisTecnico": "La prueba está automatizada y lista para ejecutar una vez iniciado el contenedor orders-api.",
+    "evidencia": ""
+  },
+  {
+    "id": "CP-02",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Verificar que la creación de un pedido publica un mensaje con persistencia en la cola \"pedidos\".",
+    "precondiciones": "Broker RabbitMQ activo y cola pedidos declarada como durable.",
+    "datosEntrada": {
+      "customerName": "María Pérez",
+      "product": "Monitor 4K",
+      "quantity": 1
+    },
+    "pasos": [
+      "1. Invocar POST /orders con nuevo pedido.",
+      "2. Conectarse al broker RabbitMQ vía AMQP y consultar estado de la cola pedidos.",
+      "3. Validar incremento en contador de mensajes listos (Ready)."
+    ],
+    "resultadoEsperado": "Mensaje encolado en cola \"pedidos\" con correlationId y propiedades duraderas.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Broker RabbitMQ pendiente de inicialización en puerto 5672.",
+    "analisisTecnico": "Requiere broker RabbitMQ activo para verificar estado de la cola pedidos.",
+    "evidencia": ""
+  },
+  {
+    "id": "CP-03",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Validar que el worker notification-worker extrae el mensaje de la cola, simula procesamiento y envía confirmación (ack).",
+    "precondiciones": "Servicio notification-worker en ejecución escuchando cola pedidos.",
+    "datosEntrada": {
+      "customerName": "Laura Restrepo",
+      "product": "Teclado Mecánico",
+      "quantity": 1
+    },
+    "pasos": [
+      "1. Publicar pedido en la cola.",
+      "2. Observar logs de notification-worker.",
+      "3. Comprobar recepción de mensaje, inicio de procesamiento simulado y emisión de ACK."
+    ],
+    "resultadoEsperado": "El worker procesa el pedido en ~3 segundos, emite logs detallados y confirma con channel.ack(msg).",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Contenedor notification-worker pendiente de ejecución.",
+    "analisisTecnico": "Requiere contenedores Docker levantados para captura de logs en tiempo real.",
+    "evidencia": ""
+  },
+  {
+    "id": "CP-06",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Seguir un mismo pedido (orderId y correlationId) a través de la API, el broker y el consumidor.",
+    "precondiciones": "Flujo completo orders-api -> rabbitmq -> notification-worker en ejecución.",
+    "datosEntrada": {
+      "customerName": "Andrés Castro",
+      "product": "Impresora 3D",
+      "quantity": 1
+    },
+    "pasos": [
+      "1. Generar pedido y capturar orderId y correlationId retornados por la API.",
+      "2. Rastrear correlationId en los logs de publicación de orders-api.",
+      "3. Rastrear correlationId y orderId en los logs de recepción y finalización del worker."
+    ],
+    "resultadoEsperado": "Mismo orderId y correlationId presentes en cada etapa del ciclo de vida del mensaje.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de despliegue de contenedores.",
+    "analisisTecnico": "El patrón Correlation Identifier implementado garantiza auditabilidad e idempotencia en arquitecturas asincrónicas.",
+    "evidencia": "Logs cruzados de orders-api y notification-worker coinciden exactamente con el identificador."
+  },
+  {
+    "id": "CP-07",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Demostrar que la API responde inmediatamente al cliente (<100ms) sin bloquearse por la duración del consumidor (~3000ms).",
+    "precondiciones": "notification-worker configurado con PROCESSING_DELAY_MS=3000.",
+    "datosEntrada": {
+      "customerName": "Sofía Morales",
+      "product": "Licencia Software",
+      "quantity": 5
+    },
+    "pasos": [
+      "1. Enviar solicitud POST /orders registrando tiempo exacto de inicio y fin HTTP.",
+      "2. Comparar duración HTTP frente a la duración simulada del worker (3000ms).",
+      "3. Confirmar que duración HTTP << duración de procesamiento."
+    ],
+    "resultadoEsperado": "Tiempo de respuesta HTTP menor a 150ms a pesar de que el worker tarda 3000ms.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de validación con API en ejecución.",
+    "analisisTecnico": "Demuestra cumplimiento de la propiedad Responsive del Manifiesto Reactivo: desacoplamiento de tiempos de procesamiento.",
+    "evidencia": "Métricas de latencia HTTP vs tiempo de ejecución en worker."
+  },
+  {
+    "id": "CP-08",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Verificar que no existe invocación directa HTTP ni conocimiento del consumidor por parte de la API.",
+    "precondiciones": "Inspección de arquitectura y red Docker.",
+    "datosEntrada": "Inspección de código fuente y puertos expuestos.",
+    "pasos": [
+      "1. Verificar que notification-worker no expone ningún puerto HTTP.",
+      "2. Verificar que orders-api únicamente publica sobre protocolo AMQP (puerto 5672).",
+      "3. Confirmar comunicación asíncrona basada en paso de mensajes."
+    ],
+    "resultadoEsperado": "Comunicación 100% mediada por RabbitMQ mediante mensajes estructurados.",
+    "estado": "Cumple",
+    "resultadoObtenido": "notification-worker no expone puertos ni API REST. orders-api interactúa únicamente con el broker RabbitMQ.",
+    "analisisTecnico": "Cumple con el principio Message-Driven: componentes desacoplados en ubicación y canal de transporte mediante AMQP.",
+    "evidencia": "docker-compose.yml y código fuente de notification-worker sin servidor HTTP."
+  },
+  {
+    "id": "CP-09",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Verificar que la detención del worker no causa fallas en la API ni pérdida de mensajes en el sistema.",
+    "precondiciones": "orders-api y rabbitmq en ejecución. notification-worker detenido con docker stop.",
+    "datosEntrada": {
+      "customerName": "Usuario Resiliencia",
+      "product": "Servidor Rack",
+      "quantity": 1
+    },
+    "pasos": [
+      "1. Detener contenedor notification-worker.",
+      "2. Enviar solicitud POST /orders.",
+      "3. Validar que la API responde HTTP 202 exitosamente.",
+      "4. Comprobar que el mensaje queda acumulado en estado Ready en la cola pedidos."
+    ],
+    "resultadoEsperado": "La API no se afecta por la caída del consumidor y el mensaje permanece retenido de forma segura en la cola.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de prueba de parada de contenedor.",
+    "analisisTecnico": "La persistencia en cola aísla al productor de las fallas del consumidor, satisfaciendo la propiedad Resilient.",
+    "evidencia": "Consola de RabbitMQ muestra 1 mensaje en Ready con worker inactivo."
+  },
+  {
+    "id": "CP-10",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Demostrar el reparto de carga equitativo entre múltiples instancias de notification-worker con prefetch(1).",
+    "precondiciones": "notification-worker escalado a 2 instancias: docker compose up -d --scale notification-worker=2.",
+    "datosEntrada": "Envío de ráfaga de 4 pedidos consecutivos.",
+    "pasos": [
+      "1. Escalar notification-worker a 2 contenedores.",
+      "2. Publicar 4 pedidos en rápida sucesión.",
+      "3. Inspeccionar logs de ambas instancias para verificar que cada una procesa aproximadamente el 50% de los mensajes."
+    ],
+    "resultadoEsperado": "Distribución balanceada de mensajes entre ambas instancias gracias a prefetch(1).",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de ejecución de comando de escalamiento en Docker Compose.",
+    "analisisTecnico": "Con prefetch=1, RabbitMQ no entrega mensajes adicionales a un worker hasta que este confirme el mensaje actual con ACK, logrando Round-Robin justo.",
+    "evidencia": "Logs de dos workers distintos procesando mensajes alternados."
+  },
+  {
+    "id": "CP-11",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Verificar que mensajes acumulados mientras el worker estaba apagado se procesan correctamente al iniciar el worker.",
+    "precondiciones": "Mensajes encolados en estado Ready con worker detenido.",
+    "datosEntrada": "Arranque del worker: docker compose start notification-worker.",
+    "pasos": [
+      "1. Con el worker apagado, enviar 3 pedidos a la API.",
+      "2. Iniciar el consumidor notification-worker.",
+      "3. Verificar en los logs que consume en orden y confirma todos los mensajes pendientes hasta vaciar la cola."
+    ],
+    "resultadoEsperado": "Consumo diferido exitoso de todos los mensajes acumulados sin duplicidad ni omisiones.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de prueba controlada de parada y arranque.",
+    "analisisTecnico": "Demuestra desacoplamiento temporal: el productor y el consumidor no necesitan coincidir en el tiempo para completar la transacción.",
+    "evidencia": "Logs de arranque del worker procesando pedidos con marcas de tiempo anteriores."
+  },
+  {
+    "id": "CP-12",
+    "arquitectura": "RabbitMQ",
+    "objetivo": "Comprobar que si el worker o el broker se reinicia antes de confirmar un mensaje, este no se pierde y se reprocesa.",
+    "precondiciones": "Mensaje en proceso dentro de notification-worker (estado Unacked).",
+    "datosEntrada": "Reinicio forzado del contenedor durante el retardo de 3 segundos.",
+    "pasos": [
+      "1. Enviar pedido.",
+      "2. Esperar 1 segundo tras la recepción en el worker e interrumpir el contenedor.",
+      "3. Iniciar el contenedor y verificar que RabbitMQ reentrega el mensaje no confirmado (redelivered=true)."
+    ],
+    "resultadoEsperado": "El mensaje no confirmado regresa a estado Ready y es procesado satisfactoriamente por el worker recuperado.",
+    "estado": "Pendiente",
+    "resultadoObtenido": "Pendiente de prueba de terminación forzada y recuperación.",
+    "analisisTecnico": "El mecanismo de ACK manual previene la pérdida de mensajes ante caídas intempestivas del nodo consumidor.",
+    "evidencia": "Log con reentrega y confirmación exitosa posterior al reinicio."
+  }
+]

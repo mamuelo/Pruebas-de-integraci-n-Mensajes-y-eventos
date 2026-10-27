@@ -1,0 +1,12 @@
+{
+  "name": "kafka-billing-consumer",
+  "version": "1.0.0",
+  "description": "Consumidor de Kafka para generación de factura y cobro de pedidos",
+  "main": "src/consumer.js",
+  "scripts": {
+    "start": "node src/consumer.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}

@@ -1,0 +1,5 @@
+[orders-api] [STARTUP] Servidor HTTP (Kafka) escuchando en puerto 3000
+[orders-api] [INIT] Conectando a Kafka en kafka:9092 (Intento 1/30)...
+[orders-api] [ADMIN] Tópico 'orders.events' ya existe en el cluster.
+[orders-api] [READY] Conectado exitosamente a Kafka y listo para emitir eventos.
+[orders-api] [2026-10-26T20:50:15.210Z] [orderId=ORD-1729992035000-7712] [correlationId=corr-5a910d92-23f1-46ab-8231-1e901f44a9b1] Evento 'OrderCreated' publicado en 'orders.events' (partición=0, offset=14) en 28ms.

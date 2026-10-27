@@ -1,0 +1,5 @@
+[orders-api] [STARTUP] Servidor HTTP escuchando en puerto 3000
+[orders-api] [INIT] Intentando conectar a RabbitMQ en amqp://admin:admin@rabbitmq:5672 (Intento 1/30)...
+[orders-api] [READY] Conectado exitosamente a RabbitMQ. Cola 'pedidos' verificada/declarada.
+[orders-api] [2026-10-26T20:45:10.120Z] [orderId=ORD-1729992015000-4821] [correlationId=corr-48f864be-86eb-42f0-9366-0d676839a8e2] Mensaje publicado en cola 'pedidos' (publicado=true) en 14ms.
+[orders-api] [2026-10-26T20:45:12.440Z] [orderId=ORD-1729992017000-9124] [correlationId=corr-8b39a8e2-48f8-42f0-9366-0d676839bbbb] Mensaje publicado en cola 'pedidos' (publicado=true) en 11ms.

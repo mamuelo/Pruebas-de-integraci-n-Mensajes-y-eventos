@@ -1,0 +1,15 @@
+{
+  "name": "pruebas-integracion-taller",
+  "version": "1.0.0",
+  "description": "Suite de automatización de pruebas de integración para RabbitMQ y Apache Kafka",
+  "main": "scripts/run-all-tests.js",
+  "scripts": {
+    "test": "node scripts/run-all-tests.js",
+    "test:rabbitmq": "node scripts/test-rabbitmq.js",
+    "test:kafka": "node scripts/test-kafka.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.4",
+    "kafkajs": "^2.2.4"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "rabbitmq-orders-api",
+  "version": "1.0.0",
+  "description": "API REST para recepción de pedidos y publicación en RabbitMQ",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.4",
+    "express": "^4.21.2"
+  }
+}

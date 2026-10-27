@@ -1,0 +1,13 @@
+{
+  "name": "kafka-orders-api",
+  "version": "1.0.0",
+  "description": "API REST para recepción de pedidos y publicación de eventos OrderCreated en Apache Kafka",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "kafkajs": "^2.2.4"
+  }
+}

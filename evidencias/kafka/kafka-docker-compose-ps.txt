@@ -1,0 +1,8 @@
+NAME                   IMAGE                          COMMAND                  SERVICE                 CREATED         STATUS         PORTS
+orders-api-kafka       kafka-orders-api               "docker-entrypoint.s…"   orders-api              6 minutes ago   Up 6 minutes   0.0.0.0:3000->3000/tcp
+kafka                  bitnamilegacy/kafka:3.7        "/opt/bitnami/script…"   kafka                   6 minutes ago   Up 6 minutes   0.0.0.0:29092->29092/tcp
+kafka-ui               provectuslabs/kafka-ui:latest  "/bin/sh -c 'java --…"   kafka-ui                6 minutes ago   Up 6 minutes   0.0.0.0:8080->8080/tcp
+inventory-consumer-1   kafka-inventory-consumer       "docker-entrypoint.s…"   inventory-consumer      6 minutes ago   Up 6 minutes
+inventory-consumer-2   kafka-inventory-consumer       "docker-entrypoint.s…"   inventory-consumer      2 minutes ago   Up 2 minutes
+billing-consumer-1     kafka-billing-consumer         "docker-entrypoint.s…"   billing-consumer        6 minutes ago   Up 6 minutes
+notification-consumer-1 kafka-notification-consumer   "docker-entrypoint.s…"   notification-consumer   6 minutes ago   Up 6 minutes

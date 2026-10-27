@@ -1,0 +1,12 @@
+{
+  "name": "kafka-inventory-consumer",
+  "version": "1.0.0",
+  "description": "Consumidor de Kafka para gestión y descuento de inventario",
+  "main": "src/consumer.js",
+  "scripts": {
+    "start": "node src/consumer.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}

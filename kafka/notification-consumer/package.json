@@ -1,0 +1,12 @@
+{
+  "name": "kafka-notification-consumer",
+  "version": "1.0.0",
+  "description": "Consumidor de Kafka para envío de notificaciones al cliente",
+  "main": "src/consumer.js",
+  "scripts": {
+    "start": "node src/consumer.js"
+  },
+  "dependencies": {
+    "kafkajs": "^2.2.4"
+  }
+}
