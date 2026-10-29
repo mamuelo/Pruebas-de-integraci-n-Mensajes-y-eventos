@@ -7,14 +7,15 @@
 **Institución:** Institución Universitaria ITM  
 **Facultad:** Facultad de Ingenierías  
 **Programa Académico:** Ingeniería de Sistemas  
-**Asignatura:** Aseguramiento de la Calidad del Software (ACS)  
-**Semestre:** 8  
+**Asignatura:** Aseguramiento de la Calidad del Software (ACS)   
 **Taller:** Pruebas de Integración en Arquitecturas Basadas en Mensajes y Eventos (Ponderación 20%)  
-**Docente:** [Nombre del Docente]  
+**Docente:** Carlos Andrés Jaramillo Patiño
+
 **Integrantes:**
-- [Nombre Integrante 1] - [Cédula / Carnet]
-- [Nombre Integrante 2] - [Cédula / Carnet]
-- [Nombre Integrante 3] - [Cédula / Carnet]
+- Manuela Sánchez Pareja
+- Emanuel Ortiz Areiza 
+- Juan Felipe Torres
+
 
 **Fecha de Entrega:** 1 de noviembre de 2026  
 **Medellín, Colombia**
