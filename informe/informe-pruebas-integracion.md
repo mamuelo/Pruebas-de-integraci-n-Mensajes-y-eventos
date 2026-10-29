@@ -590,18 +590,18 @@ A continuación se presentan los veinte (20) reportes individuales organizados p
 
 | ID Caso | Caso de Prueba | Tipo de Prueba | RabbitMQ | Apache Kafka | Criterio de Aceptación |
 |:---:|---|:---:|:---:|:---:|---|
-| **CP-01** | Creación de pedido vía API | Funcional | ✅ Cumple | ✅ Cumple | HTTP 202, validación de payload y generación de ID único |
-| **CP-02** | Envío de mensaje a RabbitMQ | Funcional | ✅ Cumple | N/A | Mensaje encolado en `pedidos` con `persistent: true` |
-| **CP-03** | Consumo de mensaje (RabbitMQ) | Funcional | ✅ Cumple | N/A | Consumo en worker, simulación y confirmación manual (ACK) |
-| **CP-04** | Publicación de evento en Kafka | Funcional | N/A | ✅ Cumple | Evento `OrderCreated` persistido en tópico `orders.events` |
-| **CP-05** | Consumo de evento (Kafka) | Funcional | N/A | ✅ Cumple | Recepción en 3 consumidores funcionales independientes (Fan-out) |
-| **CP-06** | Trazabilidad del flujo | Funcional | ✅ Cumple | ✅ Cumple | Propagación inmutable de `orderId` y `correlationId` |
-| **CP-07** | Responsive | Reactiva | ✅ Cumple | ✅ Cumple | Respuesta HTTP inmediata (<100ms) sin esperar a consumidores |
-| **CP-08** | Message-driven | Reactiva | ✅ Cumple | ✅ Cumple | Comunicación exclusiva vía broker; 0 llamadas HTTP directas |
-| **CP-09** | Resilient | Reactiva | ✅ Cumple | ✅ Cumple | Tolerancia a caída del consumidor; retención sin pérdida de datos |
-| **CP-10** | Elastic | Reactiva | ✅ Cumple | ✅ Cumple | Balanceo de carga horizontal entre múltiples réplicas |
-| **CP-11** | Desacoplamiento temporal | Reactiva | ✅ Cumple | ✅ Cumple | Procesamiento diferido de mensajes/eventos acumulados |
-| **CP-12** | Recuperación | Reactiva | ✅ Cumple | ✅ Cumple | Reanudación sin pérdida ante reinicio de broker o consumidor |
+| **CP-01** | Creación de pedido vía API | Funcional | Cumple | Cumple | HTTP 202, validación de payload y generación de ID único |
+| **CP-02** | Envío de mensaje a RabbitMQ | Funcional | Cumple | N/A | Mensaje encolado en `pedidos` con `persistent: true` |
+| **CP-03** | Consumo de mensaje (RabbitMQ) | Funcional | Cumple | N/A | Consumo en worker, simulación y confirmación manual (ACK) |
+| **CP-04** | Publicación de evento en Kafka | Funcional | N/A | Cumple | Evento `OrderCreated` persistido en tópico `orders.events` |
+| **CP-05** | Consumo de evento (Kafka) | Funcional | N/A | Cumple | Recepción en 3 consumidores funcionales independientes (Fan-out) |
+| **CP-06** | Trazabilidad del flujo | Funcional | Cumple | Cumple | Propagación inmutable de `orderId` y `correlationId` |
+| **CP-07** | Responsive | Reactiva | Cumple | Cumple | Respuesta HTTP inmediata (<100ms) sin esperar a consumidores |
+| **CP-08** | Message-driven | Reactiva | Cumple | Cumple | Comunicación exclusiva vía broker; 0 llamadas HTTP directas |
+| **CP-09** | Resilient | Reactiva | Cumple | Cumple | Tolerancia a caída del consumidor; retención sin pérdida de datos |
+| **CP-10** | Elastic | Reactiva | Cumple | Cumple | Balanceo de carga horizontal entre múltiples réplicas |
+| **CP-11** | Desacoplamiento temporal | Reactiva | Cumple | Cumple | Procesamiento diferido de mensajes/eventos acumulados |
+| **CP-12** | Recuperación | Reactiva | Cumple | Cumple | Reanudación sin pérdida ante reinicio de broker o consumidor |
 
 **Total de casos aplicables por arquitectura:** 10 ejecuciones en RabbitMQ + 10 ejecuciones en Kafka = **20 ejecuciones evaluadas**.
 
