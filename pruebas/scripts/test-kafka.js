@@ -4,7 +4,7 @@
  */
 
 const http = require('http');
-const { Kafka, LogLevel } = require('kafkajs');
+const { Kafka, logLevel } = require('kafkajs');
 const fs = require('fs');
 const path = require('path');
 

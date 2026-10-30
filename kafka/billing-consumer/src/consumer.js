@@ -1,4 +1,4 @@
-const { Kafka, LogLevel } = require('kafkajs');
+const { Kafka, logLevel } = require('kafkajs');
 const os = require('os');
 
 const KAFKA_BROKER = process.env.KAFKA_BROKER || 'kafka:9092';
@@ -9,7 +9,7 @@ const CONSUMER_INSTANCE_ID = process.env.CONSUMER_INSTANCE_ID || `billing-worker
 const kafka = new Kafka({
   clientId: CONSUMER_INSTANCE_ID,
   brokers: [KAFKA_BROKER],
-  logLevel: LogLevel.WARN,
+  logLevel: logLevel.WARN,
   retry: {
     initialRetryTime: 1000,
     retries: 30

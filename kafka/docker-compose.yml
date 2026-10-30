@@ -36,6 +36,7 @@ services:
   orders-api:
     build: ./orders-api
     container_name: orders-api-kafka
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
@@ -50,6 +51,7 @@ services:
 
   inventory-consumer:
     build: ./inventory-consumer
+    restart: unless-stopped
     # Sin container_name para permitir escalamiento horizontal (--scale inventory-consumer=2)
     environment:
       - KAFKA_BROKER=kafka:9092
@@ -62,6 +64,7 @@ services:
 
   billing-consumer:
     build: ./billing-consumer
+    restart: unless-stopped
     environment:
       - KAFKA_BROKER=kafka:9092
       - KAFKA_TOPIC=orders.events
@@ -73,6 +76,7 @@ services:
 
   notification-consumer:
     build: ./notification-consumer
+    restart: unless-stopped
     environment:
       - KAFKA_BROKER=kafka:9092
       - KAFKA_TOPIC=orders.events

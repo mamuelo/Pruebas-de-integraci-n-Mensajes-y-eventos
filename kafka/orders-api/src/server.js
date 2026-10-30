@@ -1,5 +1,5 @@
 const express = require('express');
-const { Kafka, LogLevel } = require('kafkajs');
+const { Kafka, logLevel } = require('kafkajs');
 const crypto = require('crypto');
 
 const app = express();
@@ -13,7 +13,7 @@ const NUM_PARTITIONS = parseInt(process.env.NUM_PARTITIONS || '2', 10);
 const kafka = new Kafka({
   clientId: 'orders-api',
   brokers: [KAFKA_BROKER],
-  logLevel: LogLevel.WARN,
+  logLevel: logLevel.WARN,
   retry: {
     initialRetryTime: 1000,
     retries: 30

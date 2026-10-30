@@ -1,6 +1,6 @@
 # Matriz Resumen de Ejecución de Pruebas de Integración
 
-**Fecha de Ejecución:** 2026-10-27T01:49:15.130Z  
+**Fecha de Ejecución:** 2026-10-30T02:49:38.160Z  
 **Total Casos Evaluados:** 20 | **Cumple:** 2 | **No Cumple:** 0 | **Pendientes:** 18
 
 | ID | Caso de Prueba | Arquitectura | Tipo | Estado | Resultado Obtenido |
